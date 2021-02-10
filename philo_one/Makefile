@@ -12,7 +12,7 @@
 
 SRCS=philo_one.c utils.c
 
-FLAGS=-Wextra -Wall -Werror
+FLAGS=-Wextra -g -Wall -Werror
 
 NAME=philo_one
 

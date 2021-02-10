@@ -12,6 +12,14 @@
 
 #include "philo_one.h"
 
+t_micro_s_t	get_time_stamp(void)
+{
+	struct timeval	timev;
+
+	gettimeofday(&timev, NULL);
+	return (timev.tv_sec * (t_micro_s_t)1000000 + timev.tv_usec);
+}
+
 int	ft_atoi(const char *str)
 {
 	int		i;
@@ -63,7 +71,31 @@ int		ft_collect_data(int argc, char **argv)
 	return (EXIT_SUCCESS);
 }
 
-void	ft_init()
+void	*live()
 {
-	forks = (pthread_mutex_t *)malloc(g_conf.nbr_philo * sizeof(pthread_mutex_t));
+	printf("hello world!\n");
+	return NULL;
+}
+
+int	ft_init()
+{
+	int i;
+
+	if (!(g_forks = (pthread_mutex_t *)malloc(g_conf.nbr_philo *
+	sizeof(pthread_mutex_t))))
+		return (EXIT_FAILURE);
+	if (pthread_mutex_init(&g_conf.mutex, NULL) ||
+	pthread_mutex_init(&g_conf.mutex_output, NULL))
+		return (EXIT_FAILURE);
+	i = 0;
+	while (i < g_conf.nbr_philo)
+		if (pthread_mutex_init(&g_forks[i++], NULL))
+			return (EXIT_FAILURE);
+	if (!(g_philos = malloc(g_conf.nbr_philo * sizeof(pthread_t))))
+        return (EXIT_FAILURE);
+    i = 0;
+    while (i < g_conf.nbr_philo)
+		if (pthread_create(&g_philos[i++], NULL, &live, NULL))
+			return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
