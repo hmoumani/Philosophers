@@ -24,7 +24,7 @@ void	doctor()
 		i = 0;
 		while (i < g_conf.nbr_philo)
 		{
-			if (g_philos[i].total_eated > g_conf.nbr_to_end && g_conf.nbr_to_end > 0)
+			if (g_philos[i].status == DONE)
 				done++;
 			if (get_time_stamp() - g_philos[i].time_last_eat > g_conf.ti_to_die 
 			&& g_philos[i].status != EATING)

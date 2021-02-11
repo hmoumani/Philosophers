@@ -26,6 +26,7 @@
 # define DEAD 5
 # define TAKING_FORKS 6
 # define LEAVING_FORKS 7
+# define DONE 8
 
 typedef long	t_micro_s_t;
 
@@ -61,6 +62,7 @@ int			ft_error(char *error_message);
 int			ft_collect_data(int argc, char **argv);
 int			ft_atoi(const char *str);
 int			ft_init();
+void		status(t_philo *philo, int status);
 void		think(t_philo *philo);
 void		forks(t_philo *philo);
 void		eat(t_philo *philo);
