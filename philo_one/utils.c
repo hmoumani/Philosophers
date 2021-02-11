@@ -113,7 +113,6 @@ int	ft_init()
 	// while (i < g_conf.nbr_philo)
 	// 	pthread_join(g_philos[i++].philo_t, NULL);
     i = 0;
-	printf("%d\n", g_conf.nbr_philo);
     while (i < g_conf.nbr_philo)
     {
         g_philos[i].id = i + 1;
@@ -125,10 +124,11 @@ int	ft_init()
 			return (EXIT_FAILURE);
         i++;
     }
-	i = 0;
-	while (i < g_conf.nbr_philo)
-	{
-		pthread_join(g_philos[i++].philo_t, NULL);
-	}
+	// i = 0;
+	// while (i < g_conf.nbr_philo)
+	// {
+	// 	pthread_join(g_philos[i++].philo_t, NULL);
+	// }
+    doctor();
 	return (EXIT_SUCCESS);
 }
