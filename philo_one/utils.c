@@ -85,6 +85,7 @@ void	*life_circle(void   *param)
         forks(philo);
 		eat(philo);
         leave_forks(philo);
+        ft_sleep(philo);
     }
 	pthread_mutex_unlock(&g_conf.mutex);
     return (NULL);
