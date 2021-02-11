@@ -33,8 +33,6 @@ void	print_status(t_philo *philo)
 		st = "died";
 	else if (philo->status == TAKING_FORKS)
 		st = "has taken a fork";
-	else if (philo->status == LEAVING_FORKS)
-		st = "IS LEAVING FORKS";
 	
 	pthread_mutex_lock(&g_conf.mutex_output);
 	printf("%ld\t%d\t%s\n",(get_time_stamp() - g_time_start) / 
@@ -73,5 +71,4 @@ void	leave_forks(t_philo *philo)
 	status(philo, LEAVING_FORKS);
 	pthread_mutex_unlock(&g_forks[philo->id - 1]);
 	pthread_mutex_unlock(&g_forks[philo->id % g_conf.nbr_philo]);
-	print_status(philo);
 }
