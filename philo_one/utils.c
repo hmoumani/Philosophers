@@ -58,9 +58,9 @@ int		ft_error(char *error_message)
 int		ft_collect_data(int argc, char **argv)
 {
 	g_conf.nbr_philo = ft_atoi(argv[1]);
-	g_conf.ti_to_die = ft_atoi(argv[2]);
-	g_conf.ti_to_eat = ft_atoi(argv[3]);
-	g_conf.ti_to_sleep = ft_atoi(argv[4]);
+	g_conf.ti_to_die = ft_atoi(argv[2]) * 1000;
+	g_conf.ti_to_eat = ft_atoi(argv[3]) * 1000;
+	g_conf.ti_to_sleep = ft_atoi(argv[4]) * 1000;
 	g_conf.nbr_to_end = -1;
 	if (argc == 6)
 		g_conf.nbr_to_end = ft_atoi(argv[5]);
@@ -78,13 +78,13 @@ void	*life_circle(void   *param)
     philo = param;
 	pthread_mutex_lock(&g_conf.mutex);
 	// printf("hello\n");
-    while ((g_conf.nbr_to_end == -1 || g_conf.nbr_to_end < g_conf.total_eated)
+    while ((g_conf.nbr_to_end == -1 || philo->total_eated < g_conf.nbr_to_end)
     && g_conf.run)
     {
         think(philo);
-		usleep(1000);
-		print_status(philo);
-		pthread_mutex_unlock(&g_conf.mutex);
+        forks(philo);
+		eat(philo);
+        leave_forks(philo);
     }
 	pthread_mutex_unlock(&g_conf.mutex);
     return (NULL);

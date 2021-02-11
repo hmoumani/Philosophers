@@ -12,33 +12,66 @@
 
 #include "philo_one.h"
 
-void    status(t_philo *philo, int status)
+void	status(t_philo *philo, int status)
 {
-    if (philo->status != DEAD)
-        philo->status = status;
+	if (philo->status != DEAD)
+		philo->status = status;
 }
 
-void    print_status(t_philo *philo)
+void	print_status(t_philo *philo)
 {
-    char *st;
+	char *st;
 
-    if (philo->status == EATING)
-        st = "IS EATING";
-    if (philo->status == SLEEPING)
-        st = "IS SLEEPING";
-    if (philo->status == THINKING)
-        st = "IS THINKING";
-    if (philo->status == DEAD)
-        st = "IS DEAD x)";
-    
-    pthread_mutex_lock(&g_conf.mutex_output);
-    printf("%d\t%s\t%ld\n", philo->id, st, (get_time_stamp() - g_time_start) / 
-    1000);
-    pthread_mutex_unlock(&g_conf.mutex_output);
+	st = NULL;
+	if (philo->status == EATING)
+		st = "is eating";
+	else if (philo->status == SLEEPING)
+		st = "is sleeping";
+	else if (philo->status == THINKING)
+		st = "is thinking";
+	else if (philo->status == DEAD)
+		st = "died";
+	else if (philo->status == TAKING_FORKS)
+		st = "has taken a fork";
+	else if (philo->status == LEAVING_FORKS)
+		st = "IS LEAVING FORKS";
+	
+	pthread_mutex_lock(&g_conf.mutex_output);
+	printf("%ld\t%d\t%s\n",(get_time_stamp() - g_time_start) / 
+	1000, philo->id, st);
+	pthread_mutex_unlock(&g_conf.mutex_output);
 }
 
-void    think(t_philo *philo)
+void	think(t_philo *philo)
 {
-    status(philo, THINKING);
+	status(philo, THINKING);
+	print_status(philo);
+	pthread_mutex_unlock(&g_conf.mutex);
+	pthread_mutex_unlock(&g_forks[philo->id - 1]);
+	pthread_mutex_unlock(&g_forks[philo->id % g_conf.nbr_philo]);
+}
 
+void	forks(t_philo *philo)
+{
+	pthread_mutex_unlock(&g_conf.mutex);
+	status(philo, TAKING_FORKS);
+	pthread_mutex_lock(&g_forks[philo->id - 1]);
+	pthread_mutex_lock(&g_forks[philo->id % g_conf.nbr_philo]);
+	print_status(philo);
+}
+
+void	eat(t_philo *philo)
+{
+	status(philo, EATING);
+	philo->total_eated++;
+	philo->time_last_eat = get_time_stamp();
+	usleep(g_conf.ti_to_eat - 15000);
+}
+
+void	leave_forks(t_philo *philo)
+{
+	status(philo, LEAVING_FORKS);
+	pthread_mutex_unlock(&g_forks[philo->id - 1]);
+	pthread_mutex_unlock(&g_forks[philo->id % g_conf.nbr_philo]);
+	print_status(philo);
 }

@@ -24,6 +24,8 @@
 # define THINKING 3
 # define SLEEPING 4
 # define DEAD 5
+# define TAKING_FORKS 6
+# define LEAVING_FORKS 7
 
 typedef long	t_micro_s_t;
 
@@ -34,7 +36,6 @@ typedef struct		s_conf
 	t_micro_s_t		ti_to_die;
 	t_micro_s_t		ti_to_eat;
 	t_micro_s_t		ti_to_sleep;
-	int				total_eated;
 	int				nbr_to_end;
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	mutex_output;
@@ -44,6 +45,7 @@ typedef struct	s_philo
 {
 	int			status;
 	int			id;
+	int			total_eated;
 	int			is_dead;
 	pthread_t	philo_t;
 	t_micro_s_t	time_last_eat;
@@ -59,7 +61,10 @@ int			ft_collect_data(int argc, char **argv);
 int			ft_atoi(const char *str);
 int			ft_init();
 void		think(t_philo *philo);
+void		forks(t_philo *philo);
+void		eat(t_philo *philo);
+void		leave_forks(t_philo *philo);
 t_micro_s_t	get_time_stamp(void);
-void    print_status(t_philo *philo);
+void		print_status(t_philo *philo);
 
 #endif
