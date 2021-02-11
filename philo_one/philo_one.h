@@ -49,15 +49,17 @@ typedef struct	s_philo
 	t_micro_s_t	time_last_eat;
 }				t_philo;
 
-
+t_micro_s_t		g_time_start;
 t_conf			g_conf;
 pthread_mutex_t *g_forks;
 t_philo			*g_philos;
 
-int		ft_error(char *error_message);
-int		ft_collect_data(int argc, char **argv);
-int		ft_atoi(const char *str);
-int		ft_init();
-void    think(t_philo *philo);
+int			ft_error(char *error_message);
+int			ft_collect_data(int argc, char **argv);
+int			ft_atoi(const char *str);
+int			ft_init();
+void		think(t_philo *philo);
+t_micro_s_t	get_time_stamp(void);
+void    print_status(t_philo *philo);
 
 #endif

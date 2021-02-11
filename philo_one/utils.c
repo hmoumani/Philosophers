@@ -77,17 +77,24 @@ void	*life_circle(void   *param)
 
     philo = param;
 	pthread_mutex_lock(&g_conf.mutex);
+	// printf("hello\n");
     while ((g_conf.nbr_to_end == -1 || g_conf.nbr_to_end < g_conf.total_eated)
     && g_conf.run)
     {
-        thi
+        think(philo);
+		usleep(1000);
+		print_status(philo);
+		pthread_mutex_unlock(&g_conf.mutex);
     }
+	pthread_mutex_unlock(&g_conf.mutex);
+    return (NULL);
 }
 
 int	ft_init()
 {
 	int i;
 
+	g_time_start = get_time_stamp();
     g_conf.run = True;
 	if (!(g_forks = (pthread_mutex_t *)malloc(g_conf.nbr_philo *
 	sizeof(pthread_mutex_t))))
@@ -101,22 +108,26 @@ int	ft_init()
 			return (EXIT_FAILURE);
 	if (!(g_philos = malloc(g_conf.nbr_philo * sizeof(t_philo))))
 		return (EXIT_FAILURE);
-	i = 0;
-	while (i < g_conf.nbr_philo)
-		if (pthread_create(&g_philos[i++].philo_t, NULL, &life_circle,
-        &g_philos[i]))
-			return (EXIT_FAILURE);
 	// i = 0;
 	// while (i < g_conf.nbr_philo)
 	// 	pthread_join(g_philos[i++].philo_t, NULL);
     i = 0;
+	printf("%d\n", g_conf.nbr_philo);
     while (i < g_conf.nbr_philo)
     {
         g_philos[i].id = i + 1;
         g_philos[i].is_dead = False;
         g_philos[i].status = THINKING;
         g_philos[i].time_last_eat = get_time_stamp();
+		if (pthread_create(&g_philos[i].philo_t, NULL, &life_circle,
+		&g_philos[i]))
+			return (EXIT_FAILURE);
         i++;
     }
+	i = 0;
+	while (i < g_conf.nbr_philo)
+	{
+		pthread_join(g_philos[i++].philo_t, NULL);
+	}
 	return (EXIT_SUCCESS);
 }

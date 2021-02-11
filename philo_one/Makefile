@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS=philo_one.c utils.c
+SRCS=philo_one.c utils.c life_functions.c
 
 FLAGS=-Wextra -Wall -Werror
 
