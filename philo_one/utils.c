@@ -12,15 +12,7 @@
 
 #include "philo_one.h"
 
-t_micro_s_t	get_time_stamp(void)
-{
-	struct timeval	timev;
-
-	gettimeofday(&timev, NULL);
-	return (timev.tv_sec * (t_micro_s_t)1000000 + timev.tv_usec);
-}
-
-int	ft_atoi(const char *str)
+int		ft_atoi(const char *str)
 {
 	int		i;
 	int		sign;
@@ -64,40 +56,39 @@ int		ft_collect_data(int argc, char **argv)
 	g_conf.nbr_to_end = -1;
 	if (argc == 6)
 		g_conf.nbr_to_end = ft_atoi(argv[5]);
-	if (g_conf.nbr_philo < 0 || g_conf.ti_to_die < 0 || 
+	if (g_conf.nbr_philo < 0 || g_conf.ti_to_die < 0 ||
 	g_conf.ti_to_eat < 0 || g_conf.ti_to_sleep < 0 ||
 	(argc == 6 && g_conf.nbr_to_end < 0))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-void	*life_circle(void   *param)
+void	*life_circle(void *param)
 {
-    t_philo *philo;
+	t_philo *philo;
 
-    philo = param;
+	philo = param;
 	pthread_mutex_lock(&g_conf.mutex);
-	// printf("hello\n");
-    while (g_conf.run && (g_conf.nbr_to_end == -1 || philo->total_eated < g_conf.nbr_to_end)
-    )
-    {
-        think(philo);
-        forks(philo);
+	while ((g_conf.nbr_to_end == -1 || philo->total_eated < g_conf.nbr_to_end)
+	&& g_conf.run)
+	{
+		think(philo);
+		forks(philo);
 		eat(philo);
-        leave_forks(philo);
-        ft_sleep(philo);
+		leave_forks(philo);
+		ft_sleep(philo);
 	}
 	status(philo, DONE);
-    pthread_mutex_unlock(&g_conf.mutex);
-    return (NULL);
+	pthread_mutex_unlock(&g_conf.mutex);
+	return (NULL);
 }
 
-int	ft_init()
+int		ft_init(void)
 {
 	int i;
 
 	g_time_start = get_time_stamp();
-    g_conf.run = True;
+	g_conf.run = TRUE;
 	if (!(g_forks = (pthread_mutex_t *)malloc(g_conf.nbr_philo *
 	sizeof(pthread_mutex_t))))
 		return (EXIT_FAILURE);
@@ -110,17 +101,7 @@ int	ft_init()
 			return (EXIT_FAILURE);
 	if (!(g_philos = malloc(g_conf.nbr_philo * sizeof(t_philo))))
 		return (EXIT_FAILURE);
-    i = 0;
-    while (i < g_conf.nbr_philo)
-    {
-        g_philos[i].id = i + 1;
-        g_philos[i].is_dead = False;
-        g_philos[i].status = THINKING;
-        g_philos[i].time_last_eat = g_time_start;
-		if (pthread_create(&g_philos[i].philo_t, NULL, &life_circle,
-		&g_philos[i]))
-			return (EXIT_FAILURE);
-        i++;
-    }
+	if (ft_init2())
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
