@@ -12,7 +12,7 @@
 
 #include "philo_one.h"
 
-void	doctor()
+int		doctor()
 {
 	int done;
 	int i;
@@ -26,15 +26,18 @@ void	doctor()
 		{
 			if (g_philos[i].status == DONE)
 				done++;
-			if (get_time_stamp() - g_philos[i].time_last_eat > g_conf.ti_to_die 
+			else if ((get_time_stamp() - g_philos[i].time_last_eat > g_conf.ti_to_die)
 			&& g_philos[i].status != EATING)
 			{
 				g_conf.run = False;
 				g_philos[i].status = DEAD;
 				print_status(&g_philos[i]);
-				return ;
+				pthread_mutex_lock(&g_conf.mutex_output);
+				return (EXIT_SUCCESS);
 			}
 			i++;
 		}
 	}
+	pthread_mutex_lock(&g_conf.mutex_output);
+	return (EXIT_SUCCESS);
 }

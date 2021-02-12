@@ -19,5 +19,6 @@ int main(int argc, char **argv)
         time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"));
     if (ft_collect_data(argc, argv))
         return (EXIT_FAILURE);
-    ft_init();
+    if (ft_init() || doctor())
+        return (EXIT_SUCCESS);
 }

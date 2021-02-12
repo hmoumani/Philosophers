@@ -67,8 +67,8 @@ void		think(t_philo *philo);
 void		forks(t_philo *philo);
 void		eat(t_philo *philo);
 void		leave_forks(t_philo *philo);
-void	    ft_sleep(t_philo *philo);
+void		ft_sleep(t_philo *philo);
 t_micro_s_t	get_time_stamp(void);
 void		print_status(t_philo *philo);
-void        doctor();
+int			doctor();
 #endif
