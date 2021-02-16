@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.h                                        :+:      :+:    :+:   */
+/*   philo_two.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmoumani <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -39,8 +39,8 @@ typedef struct		s_conf
 	t_micro_s_t		ti_to_eat;
 	t_micro_s_t		ti_to_sleep;
 	int				nbr_to_end;
-	sem_t			*mutex;
-	sem_t			*mutex_output;
+	sem_t			*sem;
+	sem_t			*sem_output;
 }					t_conf;
 
 typedef struct		s_philo

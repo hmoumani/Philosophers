@@ -20,10 +20,7 @@ void	think(t_philo *philo)
 
 void	forks(t_philo *philo)
 {
-	// pthread_mutex_unlock(&g_conf.mutex);
-    sem_post(g_conf.mutex);
-	// pthread_mutex_lock(&g_forks[philo->id - 1]);
-	// pthread_mutex_lock(&g_forks[philo->id % g_conf.nbr_philo]);
+    sem_post(g_conf.sem);
     sem_wait(g_sema);
     sem_wait(g_sema);
 	status(philo, TAKING_FORKS);
@@ -44,8 +41,6 @@ void	eat(t_philo *philo)
 void	leave_forks(t_philo *philo)
 {
 	status(philo, LEAVING_FORKS);
-	// pthread_mutex_unlock(&g_forks[philo->id - 1]);
-	// pthread_mutex_unlock(&g_forks[philo->id % g_conf.nbr_philo]);
     sem_post(g_sema);
     sem_post(g_sema);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.c                                        :+:      :+:    :+:   */
+/*   philo_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmoumani <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -25,6 +25,10 @@ int	main(int argc, char **argv)
 	{
 		sem_close(g_sema);
         sem_unlink("forks");
+		sem_close(g_conf.sem_output);
+        sem_unlink("output");
+		sem_close(g_conf.sem);
+        sem_unlink("global");
 		return (EXIT_SUCCESS);
 	}
 }

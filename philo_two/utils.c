@@ -68,8 +68,7 @@ void	*life_circle(void *param)
 	t_philo *philo;
 
 	philo = param;
-	// pthread_mutex_lock(&g_conf.mutex);
-    sem_wait(g_conf.mutex);
+    sem_wait(g_conf.sem);
 	while ((g_conf.nbr_to_end == -1 || philo->total_eated < g_conf.nbr_to_end)
 	&& g_conf.run)
 	{
@@ -80,8 +79,7 @@ void	*life_circle(void *param)
 		ft_sleep(philo);
 	}
 	status(philo, DONE);
-	// pthread_mutex_unlock(&g_conf.mutex);
-    sem_post(g_conf.mutex);
+    sem_post(g_conf.sem);
 	return (NULL);
 }
 
@@ -91,22 +89,13 @@ int		ft_init(void)
 
 	g_time_start = get_time_stamp();
 	g_conf.run = TRUE;
-	// if (!(g_forks = (pthread_mutex_t *)malloc(g_conf.nbr_philo *
-	// sizeof(pthread_mutex_t))))
-	// 	return (EXIT_FAILURE);
+
     g_sema = sem_open("forks", O_CREAT, 0660, g_conf.nbr_philo);
-    g_conf.mutex_output = sem_open("output", O_CREAT, 0660, 1);
-    g_conf.mutex = sem_open("global", O_CREAT, 0660, 1);
+    g_conf.sem_output = sem_open("output", O_CREAT, 0660, 1);
+    g_conf.sem = sem_open("global", O_CREAT, 0660, 1);
     if (g_sema == SEM_FAILED)
         return (EXIT_FAILURE);
-    // sem_init(&g_sema, 0, g_conf.nbr_philo);
-	// if (pthread_mutex_init(&g_conf.mutex, NULL) ||
-	// pthread_mutex_init(&g_conf.mutex_output, NULL))
-	// 	return (EXIT_FAILURE);
 	i = 0;
-	// while (i < g_conf.nbr_philo)
-	// 	if (pthread_mutex_init(&g_forks[i++], NULL))
-	// 		return (EXIT_FAILURE);
 	if (!(g_philos = malloc(g_conf.nbr_philo * sizeof(t_philo))))
 		return (EXIT_FAILURE);
 	if (ft_init2())

@@ -54,12 +54,10 @@ void		print_status(t_philo *philo)
 		st = "died";
 	else if (philo->status == TAKING_FORKS)
 		st = "has taken a fork";
-	// pthread_mutex_lock(&g_conf.mutex_output);
-    sem_wait(g_conf.mutex_output);
+    sem_wait(g_conf.sem_output);
 	printf("%ld\t%d\t%s\n", (get_time_stamp() - g_time_start) /
 	1000, philo->id, st);
-	// pthread_mutex_unlock(&g_conf.mutex_output);
-    sem_post(g_conf.mutex_output);
+    sem_post(g_conf.sem_output);
 }
 
 void		status(t_philo *philo, int status)
