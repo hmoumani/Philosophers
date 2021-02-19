@@ -12,13 +12,11 @@
 
 #include "philo_three.h"
 
-int		ft_atoi(const char *str)
+int		ft_atoi(const char *str, int i)
 {
-	int		i;
 	int		sign;
 	int		integer;
 
-	i = 0;
 	integer = 0;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
@@ -51,13 +49,13 @@ int		ft_error(char *error_message)
 
 int		ft_collect_data(int argc, char **argv)
 {
-	g_conf.nbr_philo = ft_atoi(argv[1]);
-	g_conf.ti_to_die = ft_atoi(argv[2]) * 1000;
-	g_conf.ti_to_eat = ft_atoi(argv[3]) * 1000;
-	g_conf.ti_to_sleep = ft_atoi(argv[4]) * 1000;
+	g_conf.nbr_philo = ft_atoi(argv[1], 0);
+	g_conf.ti_to_die = ft_atoi(argv[2], 0) * 1000;
+	g_conf.ti_to_eat = ft_atoi(argv[3], 0) * 1000;
+	g_conf.ti_to_sleep = ft_atoi(argv[4], 0) * 1000;
 	g_conf.nbr_to_end = -1;
 	if (argc == 6)
-		g_conf.nbr_to_end = ft_atoi(argv[5]);
+		g_conf.nbr_to_end = ft_atoi(argv[5], 0);
 	if (g_conf.nbr_philo <= 0 || g_conf.ti_to_die <= 0 ||
 	g_conf.ti_to_eat <= 0 || g_conf.ti_to_sleep <= 0 ||
 	(argc == 6 && g_conf.nbr_to_end <= 0))
@@ -91,14 +89,12 @@ int		ft_init(void)
 
 	g_time_start = get_time_stamp();
 	g_conf.run = TRUE;
-
-    g_sema = sem_open("forks", O_CREAT, S_IRWXG, g_conf.nbr_philo);
-    g_conf.sem_output = sem_open("output", O_CREAT, S_IRWXG, 1);
-    g_conf.sem = sem_open("global", O_CREAT, S_IRWXG, 1);
-	// more protection
-    if (g_sema == SEM_FAILED || g_conf.sem_output == SEM_FAILED ||
+	g_sema = sem_open("forks", O_CREAT, S_IRWXG, g_conf.nbr_philo);
+	g_conf.sem_output = sem_open("output", O_CREAT, S_IRWXG, 1);
+	g_conf.sem = sem_open("global", O_CREAT, S_IRWXG, 1);
+	if (g_sema == SEM_FAILED || g_conf.sem_output == SEM_FAILED ||
 	g_conf.sem == SEM_FAILED)
-        return (ft_error("error: fatal\n"));
+		return (ft_error("error: fatal\n"));
 	i = 0;
 	if (!(g_philos = malloc(g_conf.nbr_philo * sizeof(t_philo))))
 		return (ft_error("malloc failedn\n"));

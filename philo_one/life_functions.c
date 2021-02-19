@@ -14,7 +14,6 @@
 
 void	think(t_philo *philo)
 {
-	
 	status(philo, THINKING);
 	print_status(philo);
 }

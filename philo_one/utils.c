@@ -12,13 +12,11 @@
 
 #include "philo_one.h"
 
-int		ft_atoi(const char *str)
+int		ft_atoi(const char *str, int i)
 {
-	int		i;
 	int		sign;
 	int		integer;
 
-	i = 0;
 	integer = 0;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
@@ -51,18 +49,17 @@ int		ft_error(char *error_message)
 
 int		ft_collect_data(int argc, char **argv)
 {
-	g_conf.nbr_philo = ft_atoi(argv[1]);
-	g_conf.ti_to_die = ft_atoi(argv[2]) * 1000;
-	g_conf.ti_to_eat = ft_atoi(argv[3]) * 1000;
-	g_conf.ti_to_sleep = ft_atoi(argv[4]) * 1000;
+	g_conf.nbr_philo = ft_atoi(argv[1], 0);
+	g_conf.ti_to_die = ft_atoi(argv[2], 0) * 1000;
+	g_conf.ti_to_eat = ft_atoi(argv[3], 0) * 1000;
+	g_conf.ti_to_sleep = ft_atoi(argv[4], 0) * 1000;
 	g_conf.nbr_to_end = -1;
 	if (argc == 6)
-		g_conf.nbr_to_end = ft_atoi(argv[5]);
+		g_conf.nbr_to_end = ft_atoi(argv[5], 0);
 	if (g_conf.nbr_philo <= 0 || g_conf.ti_to_die <= 0 ||
 	g_conf.ti_to_eat <= 0 || g_conf.ti_to_sleep <= 0 ||
 	(argc == 6 && g_conf.nbr_to_end <= 0))
 		return (ft_error("error: Arguements\n"));
-	// printf("%d %ld %d\n", g_conf.nbr_philo, g_conf.ti_to_die, g_conf.nbr_to_end);
 	return (EXIT_SUCCESS);
 }
 

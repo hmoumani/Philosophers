@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_ONE_H
-# define PHILO_ONE_H
+#ifndef PHILO_TWO_H
+# define PHILO_TWO_H
 # include <stdlib.h>
 # include <pthread.h>
 # include <unistd.h>
@@ -56,12 +56,12 @@ typedef struct		s_philo
 
 t_micro_s_t			g_time_start;
 t_conf				g_conf;
-sem_t               *g_sema;
+sem_t				*g_sema;
 t_philo				*g_philos;
 
 int					ft_error(char *error_message);
 int					ft_collect_data(int argc, char **argv);
-int					ft_atoi(const char *str);
+int					ft_atoi(const char *str, int i);
 int					ft_init();
 void				status(t_philo *philo, int status);
 void				think(t_philo *philo);

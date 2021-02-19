@@ -12,7 +12,6 @@
 
 #include "philo_three.h"
 
-
 void	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
@@ -50,22 +49,10 @@ void	ft_putstr_fd(char *s, int fd)
 		{
 			write(fd, &s[i++], 1);
 		}
-		// write(1, "\n", 1);
 	}
 }
 
-
-int	ft_strlen(char *s)
-{
-	int i;
-	
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
-int hold_prog()
+int		hold_prog(void)
 {
 	int	i;
 	int j;
@@ -87,24 +74,21 @@ int hold_prog()
 	return (EXIT_SUCCESS);
 }
 
-int	main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
 	if (argc != 5 && argc != 6)
 		return (ft_error("usage ./philo_one number_of_philosophers time_to_die\
-		time__eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"));
-	// sem_close(g_sema);
+		time__eat time_to_slep [number_of_times_each_philsopher_must_eat]\n"));
 	sem_unlink("forks");
-	// sem_close(g_conf.sem_output);
 	sem_unlink("output");
-	// sem_close(g_conf.sem);
 	sem_unlink("global");
 	if (ft_collect_data(argc, argv))
 		return (ft_error("error: arguments\n"));
 	if (ft_init() || !hold_prog())
 	{
-        sem_unlink("forks");
-        sem_unlink("output");
-        sem_unlink("global");
+		sem_unlink("forks");
+		sem_unlink("output");
+		sem_unlink("global");
 		return (EXIT_SUCCESS);
 	}
 }

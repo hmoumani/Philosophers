@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS=philo_three.c utils.c life_functions.c doctor.c
+SRCS=philo_three.c utils.c life_functions.c doctor.c ft_strlen.c
 
 FLAGS=-Wextra -Wall -Werror
 

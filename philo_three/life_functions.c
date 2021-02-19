@@ -21,12 +21,12 @@ void	think(t_philo *philo)
 
 void	forks(t_philo *philo)
 {
-    sem_wait(g_sema);
-    sem_wait(g_sema);
+	sem_wait(g_sema);
+	sem_wait(g_sema);
 	status(philo, TAKING_FORKS);
 	print_status(philo);
 	print_status(philo);
-    sem_post(g_conf.sem);
+	sem_post(g_conf.sem);
 }
 
 void	eat(t_philo *philo)
@@ -44,8 +44,8 @@ void	leave_forks(t_philo *philo)
 {
 	status(philo, SLEEPING);
 	print_status(philo);
-    sem_post(g_sema);
-    sem_post(g_sema);
+	sem_post(g_sema);
+	sem_post(g_sema);
 }
 
 void	ft_sleep(t_philo *philo)

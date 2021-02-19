@@ -62,7 +62,7 @@ t_philo				*g_philos;
 int					ft_error(char *error_message);
 int					ft_strlen(char *s);
 int					ft_collect_data(int argc, char **argv);
-int					ft_atoi(const char *str);
+int					ft_atoi(const char *str, int i);
 int					ft_init();
 void				status(t_philo *philo, int status);
 void				think(t_philo *philo);

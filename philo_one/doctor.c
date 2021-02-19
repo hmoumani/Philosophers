@@ -55,15 +55,12 @@ void		print_status(t_philo *philo)
 		st = "died\n";
 	else if (philo->status == TAKING_FORKS)
 		st = "has taken a fork\n";
-	// printf("%ld %d %s\n", (get_time_stamp() - g_time_start) /
-	// 1000, philo->id, st);
 	ft_putnbr((get_time_stamp() - g_time_start) /
 	1000);
 	write(1, " ", 1);
 	ft_putnbr(philo->id);
 	write(1, " ", 1);
 	ft_putstr_fd(st, 1);
-	// write(1, " ", 1);
 	if (philo->status != DEAD)
 		pthread_mutex_unlock(&g_conf.mutex_output);
 }
@@ -89,10 +86,8 @@ int			doctor(void)
 			if (g_philos[i].status == DONE)
 				done++;
 			else if ((get_time_stamp() - g_philos[i].time_last_eat >
-			g_conf.ti_to_die)
-			&& g_philos[i].status != EATING)
+			g_conf.ti_to_die) && g_philos[i].status != EATING)
 			{
-				// pthread_mutex_lock(&g_conf.death);
 				g_conf.run = FALSE;
 				g_philos[i].status = DEAD;
 				print_status(&g_philos[i]);

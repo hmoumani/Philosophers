@@ -33,8 +33,6 @@ int			ft_init2(void)
 		g_philos[i].status = THINKING;
 		g_philos[i].total_eated = 0;
 		g_philos[i].time_last_eat = g_time_start;
-		// if (pthread_create(&g_philos[i].philo_t, NULL, &life_circle,
-		// &g_philos[i]))
 		if ((g_philos[i].pid = fork()) == 0)
 			life_circle(&g_philos[i]);
 		else if (g_philos[i].pid < 0)
@@ -61,7 +59,7 @@ void		print_status(t_philo *philo)
 		st = "died\n";
 	else if (philo->status == TAKING_FORKS)
 		st = "has taken a fork\n";
-    sem_wait(g_conf.sem_output);
+	sem_wait(g_conf.sem_output);
 	ft_putnbr((get_time_stamp() - g_time_start) /
 	1000);
 	write(1, " ", 1);
