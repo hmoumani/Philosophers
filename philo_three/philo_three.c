@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_two.c                                        :+:      :+:    :+:   */
+/*   philo_three.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hmoumani <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,50 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
+
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+void	ft_putnbr(int n)
+{
+	unsigned int result;
+
+	result = 0;
+	if (n < 0)
+	{
+		ft_putchar_fd('-', 1);
+		result = -((unsigned int)n);
+	}
+	else
+		result = n;
+	if (result < 10)
+		ft_putchar_fd(result + 48, 1);
+	else
+	{
+		ft_putnbr(result / 10);
+		ft_putchar_fd((result % 10) + 48, 1);
+	}
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	int i;
+
+	if (s)
+	{
+		i = 0;
+		while (s[i] != '\0')
+		{
+			write(fd, &s[i++], 1);
+		}
+		// write(1, "\n", 1);
+	}
+}
+
 
 int	ft_strlen(char *s)
 {
@@ -22,26 +65,45 @@ int	ft_strlen(char *s)
 	return (i);
 }
 
+int hold_prog()
+{
+	int	i;
+	int j;
+	int	status;
+
+	i = 0;
+	while (i < g_conf.nbr_philo)
+	{
+		waitpid(g_philos[i].pid, &status, 0);
+		if (WEXITSTATUS(status) == 2)
+		{
+			j = 0;
+			while (j < g_conf.nbr_philo)
+				kill(g_philos[j++].pid, SIGKILL);
+			return (EXIT_SUCCESS);
+		}
+		i++;
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	main(int argc, char **argv)
 {
 	if (argc != 5 && argc != 6)
 		return (ft_error("usage ./philo_one number_of_philosophers time_to_die\
 		time__eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"));
-	sem_close(g_sema);
-        sem_unlink("forks");
-		sem_close(g_conf.sem_output);
-        sem_unlink("output");
-		sem_close(g_conf.sem);
-        sem_unlink("global");
+	// sem_close(g_sema);
+	sem_unlink("forks");
+	// sem_close(g_conf.sem_output);
+	sem_unlink("output");
+	// sem_close(g_conf.sem);
+	sem_unlink("global");
 	if (ft_collect_data(argc, argv))
 		return (ft_error("error: arguments\n"));
-	if (ft_init() || doctor())
+	if (ft_init() || !hold_prog())
 	{
-		sem_close(g_sema);
         sem_unlink("forks");
-		sem_close(g_conf.sem_output);
         sem_unlink("output");
-		sem_close(g_conf.sem);
         sem_unlink("global");
 		return (EXIT_SUCCESS);
 	}

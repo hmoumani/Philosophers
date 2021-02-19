@@ -72,6 +72,7 @@ void				ft_sleep(t_philo *philo);
 t_micro_s_t			get_time_stamp(void);
 void				*life_circle(void *param);
 void				print_status(t_philo *philo);
+int					ft_strlen(char *s);
 int					ft_init2(void);
 int					doctor();
 #endif

@@ -25,6 +25,7 @@ void	forks(t_philo *philo)
     sem_wait(g_sema);
 	status(philo, TAKING_FORKS);
 	print_status(philo);
+	print_status(philo);
 }
 
 void	eat(t_philo *philo)

@@ -23,6 +23,8 @@ int		ft_atoi(const char *str)
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
 	sign = (str[i] == 45 ? -1 : 1);
+	if (sign == -1)
+		return (-1);
 	if (str[i] == 43 || str[i] == 45)
 		i++;
 	while (str[i] != '\0')
@@ -43,7 +45,7 @@ int		ft_atoi(const char *str)
 
 int		ft_error(char *error_message)
 {
-	printf("%s\n", error_message);
+	write(2, error_message, ft_strlen(error_message));
 	return (EXIT_FAILURE);
 }
 
@@ -56,10 +58,11 @@ int		ft_collect_data(int argc, char **argv)
 	g_conf.nbr_to_end = -1;
 	if (argc == 6)
 		g_conf.nbr_to_end = ft_atoi(argv[5]);
-	if (g_conf.nbr_philo < 0 || g_conf.ti_to_die < 0 ||
-	g_conf.ti_to_eat < 0 || g_conf.ti_to_sleep < 0 ||
-	(argc == 6 && g_conf.nbr_to_end < 0))
-		return (EXIT_FAILURE);
+	if (g_conf.nbr_philo <= 0 || g_conf.ti_to_die <= 0 ||
+	g_conf.ti_to_eat <= 0 || g_conf.ti_to_sleep <= 0 ||
+	(argc == 6 && g_conf.nbr_to_end <= 0))
+		return (ft_error("error: Arguements\n"));
+	// printf("%d %ld %d\n", g_conf.nbr_philo, g_conf.ti_to_die, g_conf.nbr_to_end);
 	return (EXIT_SUCCESS);
 }
 
@@ -93,7 +96,8 @@ int		ft_init(void)
 	sizeof(pthread_mutex_t))))
 		return (EXIT_FAILURE);
 	if (pthread_mutex_init(&g_conf.mutex, NULL) ||
-	pthread_mutex_init(&g_conf.mutex_output, NULL))
+	pthread_mutex_init(&g_conf.mutex_output, NULL) ||
+	pthread_mutex_init(&g_conf.death, NULL))
 		return (EXIT_FAILURE);
 	i = 0;
 	while (i < g_conf.nbr_philo)

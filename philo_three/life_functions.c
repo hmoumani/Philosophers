@@ -10,23 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_one.h"
+#include "philo_three.h"
 
 void	think(t_philo *philo)
 {
-	
 	status(philo, THINKING);
 	print_status(philo);
+	sem_wait(g_conf.sem);
 }
 
 void	forks(t_philo *philo)
 {
-	pthread_mutex_unlock(&g_conf.mutex);
+    sem_wait(g_sema);
+    sem_wait(g_sema);
 	status(philo, TAKING_FORKS);
-	pthread_mutex_lock(&g_forks[philo->id - 1]);
 	print_status(philo);
-	pthread_mutex_lock(&g_forks[philo->id % g_conf.nbr_philo]);
 	print_status(philo);
+    sem_post(g_conf.sem);
 }
 
 void	eat(t_philo *philo)
@@ -44,8 +44,8 @@ void	leave_forks(t_philo *philo)
 {
 	status(philo, SLEEPING);
 	print_status(philo);
-	pthread_mutex_unlock(&g_forks[philo->id - 1]);
-	pthread_mutex_unlock(&g_forks[philo->id % g_conf.nbr_philo]);
+    sem_post(g_sema);
+    sem_post(g_sema);
 }
 
 void	ft_sleep(t_philo *philo)

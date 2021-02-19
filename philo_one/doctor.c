@@ -43,21 +43,29 @@ void		print_status(t_philo *philo)
 {
 	char *st;
 
+	pthread_mutex_lock(&g_conf.mutex_output);
 	st = NULL;
 	if (philo->status == EATING)
-		st = "is eating";
+		st = "is eating\n";
 	else if (philo->status == SLEEPING)
-		st = "is sleeping";
+		st = "is sleeping\n";
 	else if (philo->status == THINKING)
-		st = "is thinking";
+		st = "is thinking\n";
 	else if (philo->status == DEAD)
-		st = "died";
+		st = "died\n";
 	else if (philo->status == TAKING_FORKS)
-		st = "has taken a fork";
-	pthread_mutex_lock(&g_conf.mutex_output);
-	printf("%ld\t%d\t%s\n", (get_time_stamp() - g_time_start) /
-	1000, philo->id, st);
-	pthread_mutex_unlock(&g_conf.mutex_output);
+		st = "has taken a fork\n";
+	// printf("%ld %d %s\n", (get_time_stamp() - g_time_start) /
+	// 1000, philo->id, st);
+	ft_putnbr((get_time_stamp() - g_time_start) /
+	1000);
+	write(1, " ", 1);
+	ft_putnbr(philo->id);
+	write(1, " ", 1);
+	ft_putstr_fd(st, 1);
+	// write(1, " ", 1);
+	if (philo->status != DEAD)
+		pthread_mutex_unlock(&g_conf.mutex_output);
 }
 
 void		status(t_philo *philo, int status)
@@ -84,6 +92,7 @@ int			doctor(void)
 			g_conf.ti_to_die)
 			&& g_philos[i].status != EATING)
 			{
+				// pthread_mutex_lock(&g_conf.death);
 				g_conf.run = FALSE;
 				g_philos[i].status = DEAD;
 				print_status(&g_philos[i]);

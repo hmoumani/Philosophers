@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_two.h"
+#include "philo_three.h"
+
 int		ft_atoi(const char *str)
 {
 	int		i;
@@ -64,12 +65,13 @@ int		ft_collect_data(int argc, char **argv)
 	return (EXIT_SUCCESS);
 }
 
-void	*life_circle(void *param)
+void	life_circle(void *param)
 {
 	t_philo *philo;
 
 	philo = param;
-    sem_wait(g_conf.sem);
+	if (pthread_create(&philo->thread, NULL, doctor, philo))
+		exit(ft_error("error fatal\n"));
 	while ((g_conf.nbr_to_end == -1 || philo->total_eated < g_conf.nbr_to_end)
 	&& g_conf.run)
 	{
@@ -80,8 +82,7 @@ void	*life_circle(void *param)
 		ft_sleep(philo);
 	}
 	status(philo, DONE);
-    sem_post(g_conf.sem);
-	return (NULL);
+	exit(EXIT_SUCCESS);
 }
 
 int		ft_init(void)
@@ -91,14 +92,16 @@ int		ft_init(void)
 	g_time_start = get_time_stamp();
 	g_conf.run = TRUE;
 
-    g_sema = sem_open("forks", O_CREAT, 0660, g_conf.nbr_philo);
-    g_conf.sem_output = sem_open("output", O_CREAT, 0660, 1);
-    g_conf.sem = sem_open("global", O_CREAT, 0660, 1);
-    if (g_sema == SEM_FAILED)
-        return (EXIT_FAILURE);
+    g_sema = sem_open("forks", O_CREAT, S_IRWXG, g_conf.nbr_philo);
+    g_conf.sem_output = sem_open("output", O_CREAT, S_IRWXG, 1);
+    g_conf.sem = sem_open("global", O_CREAT, S_IRWXG, 1);
+	// more protection
+    if (g_sema == SEM_FAILED || g_conf.sem_output == SEM_FAILED ||
+	g_conf.sem == SEM_FAILED)
+        return (ft_error("error: fatal\n"));
 	i = 0;
 	if (!(g_philos = malloc(g_conf.nbr_philo * sizeof(t_philo))))
-		return (EXIT_FAILURE);
+		return (ft_error("malloc failedn\n"));
 	if (ft_init2())
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
