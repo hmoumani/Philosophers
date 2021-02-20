@@ -74,5 +74,8 @@ void				*life_circle(void *param);
 void				print_status(t_philo *philo);
 int					ft_strlen(char *s);
 int					ft_init2(void);
+void				ft_putstr_fd(char *s, int fd);
+void				ft_putnbr(int n);
+void				ft_putchar_fd(char c, int fd);
 int					doctor();
 #endif

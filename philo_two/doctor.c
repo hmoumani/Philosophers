@@ -55,8 +55,15 @@ void		print_status(t_philo *philo)
 	else if (philo->status == TAKING_FORKS)
 		st = "has taken a fork";
 	sem_wait(g_conf.sem_output);
-	printf("%ld %d %s\n", (get_time_stamp() - g_time_start) /
-	1000, philo->id, st);
+	// printf("%ld %d %s\n", (get_time_stamp() - g_time_start) /
+	// 1000, philo->id, st);
+	ft_putnbr((get_time_stamp() - g_time_start) /
+	1000);
+	write(1, " ", 1);
+	ft_putnbr(philo->id);
+	write(1, " ", 1);
+	ft_putstr_fd(st, 1);
+	sem_post(g_conf.sem_output);
 }
 
 void		status(t_philo *philo, int status)

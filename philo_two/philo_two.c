@@ -12,6 +12,46 @@
 
 #include "philo_two.h"
 
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+void	ft_putnbr(int n)
+{
+	unsigned int result;
+
+	result = 0;
+	if (n < 0)
+	{
+		ft_putchar_fd('-', 1);
+		result = -((unsigned int)n);
+	}
+	else
+		result = n;
+	if (result < 10)
+		ft_putchar_fd(result + 48, 1);
+	else
+	{
+		ft_putnbr(result / 10);
+		ft_putchar_fd((result % 10) + 48, 1);
+	}
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	int i;
+
+	if (s)
+	{
+		i = 0;
+		while (s[i] != '\0')
+		{
+			write(fd, &s[i++], 1);
+		}
+	}
+}
+
 int	ft_strlen(char *s)
 {
 	int i;

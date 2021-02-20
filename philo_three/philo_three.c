@@ -61,7 +61,7 @@ int		hold_prog(void)
 	i = 0;
 	while (i < g_conf.nbr_philo)
 	{
-		waitpid(g_philos[i].pid, &status, 0);
+		waitpid(-1, &status, 0);
 		if (WEXITSTATUS(status) == 2)
 		{
 			j = 0;

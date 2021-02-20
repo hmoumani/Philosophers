@@ -90,7 +90,14 @@ int			doctor(void)
 			{
 				g_conf.run = FALSE;
 				g_philos[i].status = DEAD;
-				print_status(&g_philos[i]);
+				// print_status(&g_philos[i]);
+				pthread_mutex_lock(&g_conf.mutex_output);
+				ft_putnbr((get_time_stamp() - g_time_start) /
+				1000);
+				write(1, " ", 1);
+				ft_putnbr(g_philos[i].id);
+				write(1, " ", 1);
+				ft_putstr_fd("died\n", 1);
 				return (EXIT_SUCCESS);
 			}
 			i++;

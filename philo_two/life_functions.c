@@ -42,6 +42,8 @@ void	eat(t_philo *philo)
 void	leave_forks(t_philo *philo)
 {
 	status(philo, LEAVING_FORKS);
+	status(philo, SLEEPING);
+	print_status(philo);
 	sem_post(g_sema);
 	sem_post(g_sema);
 }
@@ -49,8 +51,6 @@ void	leave_forks(t_philo *philo)
 void	ft_sleep(t_philo *philo)
 {
 	philo->start_sleep = get_time_stamp();
-	status(philo, SLEEPING);
-	print_status(philo);
 	usleep(g_conf.ti_to_sleep - 20000);
 	while (get_time_stamp() - philo->start_sleep < g_conf.ti_to_sleep)
 		;

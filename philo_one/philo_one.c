@@ -70,5 +70,8 @@ int		main(int argc, char **argv)
 	if (ft_collect_data(argc, argv))
 		return (EXIT_FAILURE);
 	if (ft_init() || doctor())
+	{
+		pthread_mutex_unlock(&g_conf.mutex_output);
 		return (EXIT_SUCCESS);
+	}
 }

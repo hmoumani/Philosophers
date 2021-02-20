@@ -66,7 +66,8 @@ void		print_status(t_philo *philo)
 	ft_putnbr(philo->id);
 	write(1, " ", 1);
 	ft_putstr_fd(st, 1);
-	sem_post(g_conf.sem_output);
+	if (philo->status != DEAD)
+		sem_post(g_conf.sem_output);
 }
 
 void		status(t_philo *philo, int status)
