@@ -50,9 +50,10 @@ void	ft_putstr_fd(char *s, int fd)
 			write(fd, &s[i++], 1);
 		}
 	}
+	write(1, "\n", 1);
 }
 
-int	ft_strlen(char *s)
+int		ft_strlen(char *s)
 {
 	int i;
 
@@ -62,7 +63,7 @@ int	ft_strlen(char *s)
 	return (i);
 }
 
-int	main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
 	if (argc != 5 && argc != 6)
 		return (ft_error("usage ./philo_one number_of_philosophers time_to_die\
